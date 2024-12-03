@@ -23,11 +23,8 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Install Dependencies
-      run: ./gradlew dependencies
-
     - name: Run Tests
-      run: ./gradlew test
+      run: gradle test
 
     - name: Upload Test Results
       if: always()
