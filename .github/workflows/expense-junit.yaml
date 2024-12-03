@@ -1,4 +1,4 @@
-name: Expense - Run JUnit Tests
+name: Expenses - Run JUnit Tests
 
 on:
   pull_request:
@@ -25,7 +25,6 @@ jobs:
       run: gradle test
 
     - name: Upload Test Results
-      working-directory: beeja-services/beeja-expense
       if: always()
       uses: actions/upload-artifact@v3
       with:
