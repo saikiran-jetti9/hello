@@ -6,30 +6,34 @@ on:
       - main
     paths:
       - 'beeja-services/beeja-accounts/**'
+
+
 jobs:
   junit-tests:
+    # if: contains(github.event.pull_request.changed_files, 'beeja-services/beeja-accounts/src')
     runs-on: ubuntu-24.04
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
-      working-directory: ./beeja-services/beeja-accounts
 
     - name: Set up JDK 17
-      working-directory: ./beeja-services/beeja-accounts
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Install Dependencies
+      working-directory: beeja-services/beeja-accounts
+      run: ./gradlew dependencies
+
     - name: Run Tests
-      working-directory: ./beeja-services/beeja-accounts
-      run: gradle test
+      working-directory: beeja-services/beeja-accounts
+      run: ./gradlew test
 
     - name: Upload Test Results
-      working-directory: ./beeja-services/beeja-accounts
       if: always()
       uses: actions/upload-artifact@v3
       with:
         name: junit-results
-        path: build/test-results/test/
+        path: beeja-services/beeja-accounts/build/test-results/test/
