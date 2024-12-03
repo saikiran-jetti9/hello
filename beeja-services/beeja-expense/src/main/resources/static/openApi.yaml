@@ -1,0 +1,395 @@
+openapi: 3.0.1
+
+info:
+  title: Beeja - Expense Service
+  version: v1
+  description: |-
+    `Product of tech.at.core`
+    API documentation for the Beeja Open API application. It allows customer to access
+        their data via a separate API secured by an API key, secret and permissions.
+
+        ## Authentication & Authorization
+
+        The Beeja Public API uses Google as its identity 
+        and authentication system, using OAuth2 / OpenID Connect. Additionally an API key/secret 
+        authentication method is offered.
+
+        - **Token-based:** A client can also directly send a Google OAuth2 access 
+          token to any endpoint ([Bearer Token Authentication][oauth2-bearer]). 
+          Its a Client Credential flow and used for machine to machine communication.
+
+        - **API key/secret:** The endpoints of the application are also accessible via an API key 
+          and API secret as header information. Generating the Open API key and secret is only possible 
+          on SBOX environment. Generating and getting API keys endpoints are not exposed to DEV, REVIEW 
+          or PROD.
+
+        ### Authorization Levels
+
+        Most of the API's endpoints require certain functional specific scopes depending on which endpoint
+        is triggered. Supported scopes 
+
+externalDocs:
+  description: Explore Beeja Application
+  url: https://beeja-dev.techatcore.com/
+
+servers:
+  #  - url: https://beeja-dev.techatcore.com/expense
+  #    description: Beeja Accounts - Dev
+  - url: http://localhost:8000/expenses
+    description: Beeja expense management
+
+tags:
+  - name: Expense-Management
+    description: Apply for new loans and to view the status of loans(related to finance).
+
+security:
+  - StagingAccessToken: [ ]
+
+paths:
+  /v1/helloworld:
+    get:
+      tags:
+        - hello-world
+      operationId: hello
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/{expenseId}:
+    put:
+      operationId: updateExpense
+      tags:
+        - "Expenses"
+      summary: Update an expense
+      description: Updates the details of an expense based on the provided ID.
+      parameters:
+        - name: expenseId
+          in: path
+          description: ID of the expense to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Expense details to be updated
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExpenseUpdateRequest'
+      responses:
+        '200':
+          description: Expense updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+        403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Delete an expense by ID
+      operationId: deleteExpense
+      tags:
+        - Expenses
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: expenseId
+          in: path
+          required: true
+          description: ID of the expense to be deleted
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The deleted expense
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+        400':
+          description: Invalid parameter
+          content:
+            application/json:
+              example:
+                failureReason: BAD_REQUEST
+                details:
+                  message: invalid parameter
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1:
+    get:
+      summary: Filter Expenses
+      operationId: filterExpenses
+      tags:
+        - Expenses
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering expenses (YYYY/MM/DD)
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for filtering expenses (YYYY/MM/DD)
+          schema:
+            type: string
+            format: date
+        - name: modeOfPayment
+          in: query
+          description: Mode of payment for filtering expenses
+          schema:
+            type: string
+        - name: expenseType
+          in: query
+          description: Type of expense for filtering
+          schema:
+            type: string
+        - name: expenseCategory
+          in: query
+          description: Category of expense for filtering
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilterApiResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Create an expense
+      operationId: createExpense
+      tags:
+        - Expenses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExpense'
+      responses:
+        '201':
+          description: The created expense
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    googleOAuth2:
+      type: oauth2
+      description: |
+        `Use This Auth Service for Local Environment`
+        After successfully logged in, come back to this window and close this popup. Cool, now you can access Endpoints
+      flows:
+        explicit:
+          authorizationUrl: http://localhost:8000/oauth2/authorization/google
+    googleOAuth2AuthorizationCode:
+      type: oauth2
+      description: |
+        `Use This Auth Service for Dev Environment`
+        After successfully logged in, come back to this window and close this popup. Cool, now you can access Endpoints
+      flows:
+        explicit:
+          authorizationUrl: https://beeja-dev.techatcore.com/oauth2/authorization/google
+
+  schemas:
+    FilterApiResponse:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        expenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Expense'
+    Metadata:
+      type: object
+      properties:
+        totalAmount:
+          type: double
+    Expense:
+      type: object
+      required:
+        - id
+        - category
+        - type
+        - amount
+        - currencyCode
+        - isClaimed
+        - organizationId
+        - createdBy
+        - fileId
+      properties:
+        id:
+          type: string
+          example: "1"
+          description: the uniquely generated id
+        category:
+          type: string
+          example: "Travel"
+          description: the category to which the expense belongs
+        type:
+          type: string
+          example: "Business"
+          description: the type of expense
+        amount:
+          type: number
+          example: "50000"
+          description: the amount spent for expense
+        currencyCode:
+          type: string
+          example: "INR"
+          description: the type of currency
+        isClaimed:
+          type: boolean
+          example: "false"
+          description: whether the bill related to expense is claimed or not
+        organizationId:
+          type: string
+          example: "123"
+          description: the ID of the organization
+        createdBy:
+          type: string
+          example: "john.doe@techatcore.com"
+          description: the mail id of the user who created the expense
+        fileId:
+          type: string
+          example: "file123"
+          description: the id of file for identification
+
+    requests:
+      ExpenseUpdateRequest:
+        type: object
+        properties:
+          category:
+            type: string
+          type:
+            type: string
+          amount:
+            type: number
+          currencyCode:
+            type: string
+          claimed:
+            type: boolean
+          deleteFileId:
+            type: array
+            items:
+              type: string
+          files:
+            type: array
+            items:
+              type: string
+              format: binary
+          modeOfPayment:
+            type: string
+          paymentMadeBy:
+            type: string
+        required:
+          - claimed
+          - amount
+      CreateExpense:
+        type: object
+        properties:
+          category:
+            type: string
+          type:
+            type: string
+          amount:
+            type: number
+          currencyCode:
+            type: string
+          merchant:
+            type: string
+          claimed:
+            type: boolean
+          modeOfPayment:
+            type: string
+          paymentMadeBy:
+            type: string
+          expenseDate:
+            type: string
+          requestedDate:
+            type: string
+          paymentDate:
+            type: string
+          description:
+            type: string
+
+    Error:
+      type: object
+      description: An error response.
+      required:
+        - code
+      properties:
+        type:
+          type: string
+          example: authentication_error
+          description: An error type identifying the category of error.
+        code:
+          type: string
+          example: USER_NOT_FOUND
+          description: An error code to indicate short version of error.
+        message:
+          type: string
+          example: The beeja user has not been configured to use APIs yet
+          description: An error description.
+        details:
+          type: object
+          example:
+            field: firstName
+            message: must not be empty
+          description: Further details about the error. The set of
+            properties in this object depends on the type of error.
+          additionalProperties: true
+
+  responses:
+    Unauthorized:
+      description: Missing authentication.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            failureReason: UNAUTHORIZED
+            details: "Please sign-in into Beeja"
+
+      Forbidden:
+        description: Valid credentials but not enough privileges
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              failureReason: USER_NOT_WHITELISTED
+              details: "Access Denied- You have no required permissions to do this operation"
+
+      BadRequest:
+        description: Something wrong with request parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              failureReason: BAD_REQUEST
+              details: "Internal Server Error"
+

@@ -1,0 +1,39 @@
+server:
+  servlet:
+    context-path: /notifications
+  port: 8093
+
+
+
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+  application:
+    name: notification-service
+  data:
+    mongodb:
+      uri: mongodb://root:password@beeja-db-1:27017/?replicaSet=rs0&directConnection=true
+      database: notifications_sbox
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: http://beeja-service-registry:8761/eureka
+
+# actuator
+management:
+  endpoints.web.exposure.include: health,info
+  info.env.enabled: true
+info:
+  application.name: ${spring.application.name}
+
+
+client-urls:
+  accountsService: http://beeja-accounts:8080/accounts
+
+logging:
+  level:
+    feign=DEBUG:

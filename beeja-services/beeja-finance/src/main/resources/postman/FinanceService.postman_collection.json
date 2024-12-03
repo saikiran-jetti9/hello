@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "d30b2093-88b4-4f78-870a-7d6f16421040",
+		"name": "FinanceService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30821906"
+	},
+	"item": [
+		{
+			"name": "HelloWorld",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "BulkPaySlips",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "zipFile",
+							"type": "file",
+							"src": "/C:/Users/User/Downloads/app (1).zip"
+						},
+						{
+							"key": "month",
+							"value": "12",
+							"type": "text"
+						},
+						{
+							"key": "year",
+							"value": "2023",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/finance/v1/payslips",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"finance",
+						"v1",
+						"payslips"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllLoans",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8000/finance/v1/loans"
+			},
+			"response": []
+		},
+		{
+			"name": "GetLoanByEmployeeId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8000/finance/v1/loans/TAC0063"
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateLoanStatus",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/finance/v1/loans/654b1445f694093d4da8df36?status=Approved&message=abcd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"finance",
+						"v1",
+						"loans",
+						"654b1445f694093d4da8df36"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "Approved"
+						},
+						{
+							"key": "message",
+							"value": "abcd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateLoan",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"loanType\":\"PERSONAL_LOAN\",\r\n    \"amount\":1000,\r\n    \"monthlyEMI\":100,\r\n    \"purpose\":\"Home Renovation\",\r\n    \"emiTenure\":12,\r\n    \"emiStartDate\":\"2024-02-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/finance/v1/loans"
+			},
+			"response": []
+		}
+	]
+}

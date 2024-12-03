@@ -1,0 +1,52 @@
+steps:
+  # Step 0: Confiure Docker
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      gcloud auth configure-docker
+    volumes:
+    - name: 'key'
+      path: /root
+      
+  # Step 1: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', '$_GCR_REGISTRY/$_GCP_ID/$_GCR_PATH:$SHORT_SHA', '.']
+    
+  # Step 2: Push Docker image to Google Container Registry (GCR)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '$_GCR_REGISTRY/$_GCP_ID/$_GCR_PATH:$SHORT_SHA']
+
+  # Step 3: Access the GitHub OAuth token from Secret Manager
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      gcloud secrets versions access latest --secret=$_GIT_SECRET > /root/git_token
+    volumes:
+    - name: 'key'
+      path: /root
+
+  # Step 3: Clones the Manifest repository, Updates Image tag, Commit the changes and pushes
+  - name: gcr.io/cloud-builders/git
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      echo "Cloning repo ..."
+      cd /root
+      git clone -b $_REPO_BRANCH https://$_GIT_USER:$(cat /root/git_token)@github.com/$_ORG/$_GKE_REPO.git
+      cd $_GKE_REPO
+      echo -n $SHORT_SHA >overlays/$_STAGE/versions/web.version
+      git add overlays/$_STAGE/versions/web.version
+      git config user.name $_GIT_USER
+      git config user.email $_GIT_USER_MAIL
+      git commit -m "deployed, image tag with short_sa: $SHORT_SHA"
+      git push origin $_REPO_BRANCH
+    volumes:
+    - name: 'key'
+      path: '/root' 
+options:
+  logging: CLOUD_LOGGING_ONLY

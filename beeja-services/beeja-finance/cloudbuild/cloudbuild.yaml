@@ -1,0 +1,108 @@
+steps:
+  # Step 1: Build the JAR file using Gradle
+  - name: gradle:7.6-jdk17
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      cd beeja
+      pwd
+      gradle wrapper
+      ./gradlew :beeja-finance:bootJar
+    volumes:
+    - name: 'key'
+      path: /root
+
+  # Step 2: Confiure Docker
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      gcloud auth configure-docker
+    volumes:
+    - name: 'key'
+      path: /root
+
+  # Step 3: Build Docker image
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      cd beeja/beeja-finance
+      docker build -t $_GCR_REGISTRY/$_GCP_ID/$_GCR_PATH:$SHORT_SHA .
+    volumes:
+    - name: 'key'
+      path: /root
+
+  # Step 4: Push Docker image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      docker push $_GCR_REGISTRY/$_GCP_ID/$_GCR_PATH:$SHORT_SHA
+    volumes:
+    - name: 'key'
+      path: /root
+
+  # Step 5: Access the GitHub OAuth token from Secret Manager
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      gcloud secrets versions access latest --secret=$_GIT_SECRET > /root/git_token
+    volumes:
+    - name: 'key'
+      path: /root
+
+  # Step 6: Update image tag in kustomize
+  - name: gcr.io/cloud-builders/git
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      echo "Cloning repo ..."
+      cd /root
+      git clone -b $_REPO_BRANCH https://$_GIT_USER:$(cat /root/git_token)@github.com/$_ORG/$_GKE_REPO.git
+      cd $_GKE_REPO
+      echo -n $SHORT_SHA >overlays/$_STAGE/versions/api_finance.version
+    volumes:
+    - name: 'key'
+      path: '/root'
+
+  # Step 7: Deploy new image
+  - name: gcr.io/cloud-builders/kubectl
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      ls /root
+      gcloud container clusters get-credentials $_CLUSTER_ID --zone $_ZONE --project $_MT_PROJECT
+      cd /root/$_GKE_REPO
+      kubectl apply -k overlays/$_STAGE
+    volumes:
+    - name: 'key'
+      path: '/root'
+
+  # Step 8: push changes to gke repository
+  - name: gcr.io/cloud-builders/git
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      cd /root/$_GKE_REPO
+      git pull origin $_REPO_BRANCH
+      git add overlays/$_STAGE/versions/api_finance.version
+      git config user.name $_GIT_USER
+      git config user.email $_GIT_USER_MAIL
+      git commit -m "deployed, image tag with short_sa: $SHORT_SHA"
+      git push origin $_REPO_BRANCH
+    volumes:
+    - name: 'key'
+      path: '/root' 
+
+options:
+  logging: CLOUD_LOGGING_ONLY
