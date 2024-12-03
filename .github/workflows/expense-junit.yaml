@@ -1,4 +1,4 @@
-name: Expenses - Run JUnit Tests
+name: Expenses Checks
 
 on:
   pull_request:
@@ -7,6 +7,26 @@ on:
     paths:
       - 'beeja-services/beeja-expense/**'
 jobs:
+  lint:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Run Spotless Apply
+      working-directory: beeja-services/beeja-expense
+      run: gradle spotlessApply
+
+    - name: Run Checkstyle
+      working-directory: beeja-services/beeja-expense
+      run: gradle checkstyleMain
   junit-tests:
     runs-on: ubuntu-24.04
 
