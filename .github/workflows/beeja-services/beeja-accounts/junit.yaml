@@ -14,22 +14,19 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Navigate to Service Directory
-      run: cd beeja-services/beeja-accounts
-
     - name: Set up JDK 17
+      working-directory: beeja-services/beeja-accounts
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Install Dependencies
-      run: ./gradlew dependencies
-
     - name: Run Tests
-      run: ./gradlew test
+      working-directory: beeja-services/beeja-accounts
+      run: gradle test
 
     - name: Upload Test Results
+      working-directory: beeja-services/beeja-accounts
       if: always()
       uses: actions/upload-artifact@v3
       with:
