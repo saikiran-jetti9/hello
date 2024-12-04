@@ -1,13 +1,12 @@
-name: Accounts Checks
+name: Expenses Checks
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - 'beeja-services/beeja-accounts/**'
+      - 'beeja-services/beeja-expense/**'
 jobs:
-
   #CODE LINTING
   #linux
   lint-linux:
@@ -24,11 +23,11 @@ jobs:
         java-version: '17'
 
     - name: Run Spotless Apply
-      working-directory: beeja-services/beeja-accounts
+      working-directory: beeja-services/beeja-expense
       run: gradle spotlessApply
 
     # - name: Run Checkstyle
-    #   working-directory: beeja-services/beeja-accounts
+    #   working-directory: beeja-services/beeja-expense
     #   run: gradle checkstyleMain
   #macos
   lint-macos:
@@ -45,11 +44,11 @@ jobs:
         java-version: '17'
 
     - name: Run Spotless Apply
-      working-directory: beeja-services/beeja-accounts
+      working-directory: beeja-services/beeja-expense
       run: gradle spotlessApply
 
     # - name: Run Checkstyle
-    #   working-directory: beeja-services/beeja-accounts
+    #   working-directory: beeja-services/beeja-expense
     #   run: gradle checkstyleMain
   #windows
   lint-windows:
@@ -66,13 +65,13 @@ jobs:
         java-version: '17'
 
     - name: Run Spotless Apply
-      working-directory: beeja-services/beeja-accounts
+      working-directory: beeja-services/beeja-expense
       run: gradle spotlessApply
 
     # - name: Run Checkstyle
-    #   working-directory: beeja-services/beeja-accounts
+    #   working-directory: beeja-services/beeja-expense
     #   run: gradle checkstyleMain
-
+  
   # JUNIT Testing
   junit-tests:
     runs-on: ubuntu-24.04
@@ -88,7 +87,7 @@ jobs:
         java-version: '17'
 
     - name: Run Tests
-      working-directory: beeja-services/beeja-accounts
+      working-directory: beeja-services/beeja-expense
       run: gradle test
 
     - name: Upload Test Results
@@ -121,11 +120,11 @@ jobs:
       #   run: gradle wrapper
 
       - name: Generate jar package
-        working-directory: beeja-services/beeja-accounts
-        run: gradle :beeja-accounts:bootJar
+        working-directory: beeja-services/beeja-expense
+        run: gradle :beeja-expense:bootJar
 
       - name: Build Docker Image
-        working-directory: beeja-services/beeja-accounts
+        working-directory: beeja-services/beeja-expense
         run: docker build -t my-app:1.0 .
         env:
           DOCKER_BUILDKIT: 1
