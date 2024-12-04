@@ -9,7 +9,8 @@ on:
 jobs:
 
   #CODE LINTING
-  lint:
+  #linux
+  lint-linux:
     runs-on: ubuntu-24.04
 
     steps:
@@ -26,9 +27,53 @@ jobs:
       working-directory: beeja-services/beeja-service-registry
       run: gradle spotlessApply
 
-    - name: Run Checkstyle
+    # - name: Run Checkstyle
+    #   working-directory: beeja-services/beeja-service-registry
+    #   run: gradle checkstyleMain
+
+  #macos
+  lint-macos:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Run Spotless Apply
       working-directory: beeja-services/beeja-service-registry
-      run: gradle checkstyleMain
+      run: gradle spotlessApply
+
+    # - name: Run Checkstyle
+    #   working-directory: beeja-services/beeja-service-registry
+    #   run: gradle checkstyleMain
+
+  #windows
+  lint-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Run Spotless Apply
+      working-directory: beeja-services/beeja-service-registry
+      run: gradle spotlessApply
+
+    # - name: Run Checkstyle
+    #   working-directory: beeja-services/beeja-service-registry
+    #   run: gradle checkstyleMain
 
   # JUNIT Testing
   junit-tests:
