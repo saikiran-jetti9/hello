@@ -15,7 +15,7 @@ Follow below steps to run application locally
    npm install
 ```
 
-- Now run below command to start application
+- Now run below command to start applicationfsfd
 
 ```
    npm run dev
