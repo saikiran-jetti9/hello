@@ -25,3 +25,4 @@ EXPOSE 3000 3000
 
 # Start Nginx when the container runs
 CMD ["nginx", "-g", "daemon off;"]
+#fs
