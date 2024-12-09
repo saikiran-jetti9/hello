@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import {
   CenterModalContainer,
   CenterModelMainContainer,
@@ -39,7 +38,6 @@ type CenterModalProps = {
 };
 
 const CenterModal = (props: CenterModalProps) => {
-  const { t } = useTranslation();
   const rightButtonStyles = props.modalRightButtonClass
     ? {
         backgroundColor: 'white',
