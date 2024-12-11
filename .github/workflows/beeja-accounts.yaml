@@ -144,22 +144,22 @@ jobs:
   #       with:
   #         sarif_file: 'trivy-docker.sarif'
 
-    trivy-scan-vuln-type:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  trivy-scan-vuln-type:
+  runs-on: ubuntu-24.04
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Install Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'              # Scans project files
-          vuln-type: 'library'         # Only dependencies
-          format: 'sarif'              # Output format for GitHub Security
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'    # Only critical & high vulnerabilities
+    - name: Install Trivy
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'              # Scans project files
+        vuln-type: 'library'         # Only dependencies
+        format: 'sarif'              # Output format for GitHub Security
+        output: 'trivy-results.sarif'
+        severity: 'CRITICAL,HIGH'    # Only critical & high vulnerabilities
 
-      - name: Upload SARIF Report
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: trivy-results.sarif
+    - name: Upload SARIF Report
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: trivy-results.sarif
