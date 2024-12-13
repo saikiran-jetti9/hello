@@ -37,4 +37,4 @@ Or run command ```npm run fetch-translations``` to fetch and update translation 
 
 &copy; techatcore
 
-## w1orkflow testing1
+## vulntype testing1
