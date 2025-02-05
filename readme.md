@@ -1,117 +1,168 @@
 # Beeja
 
-Welcome! Beeja is an employee & contract management platform which forms one-stop solution for a small scale business. This is an highly interactive self-customised  platform which  can be applied to any region in the world. 
+**Beeja**
 
-You can manage your employees, finances, clients, contracts & expenses in this end-to-end ecosystem.
+Welcome to **Beeja**, your open-source solution for **end-to-end organizational operations**! 🎉
 
+Beeja is a highly interactive, self-customizable platform designed to simplify and streamline organizational processes. Whether you're managing employees, finances, clients, contracts, or expenses, Beeja provides a one-stop solution for small-scale businesses and startups worldwide.
 
-## Installation
+---
 
-You will need following installed on your system
+## **Table of Contents**
+- [License](#license)
+- [Website](#website)
+- [Code of Conduct](#code-of-conduct)
+- [Contributing](#contributing)
+- [Features Overview](#features-overview)
+- [Installation and Local Setup](#installation-and-local-setup)
+  - [Backend Setup](#beeja-backend---local-setup)
+  - [Frontend Setup](#beeja-ui---local-setup)
+- [API Documentation](#api-documentation)
+- [Code Quality](#code-quality)
+- [Modules and Features](#modules-and-features)
+- [Community and Support](#community-and-support)
 
-Java 17
-Docker
-Suitable location on your drive to store files
+---
 
-## Getting Started
+[![Watch the video](https://img.youtube.com/vi/y9GFpM_7tjM/maxresdefault.jpg)](https://youtu.be/y9GFpM_7tjM)
 
-Beeja uses Java 17 and Spring Boot version 3.1 with its dependent cloud version. This is multi-module application using Gradle
-Create a fork from https://github.com/tac-consulting/tac.beeja.git and clone the repo.
-It comes with init-beeja-db.js and a docker compose.yaml. These will help you to setup initial application and you can take it from there. You can edit this info anytime you want to.
+## **License**
+Beeja is licensed under the [Apache 2.0 License](./LICENSE).
 
-## Beeja Backend - Local Setup
+---
 
-$ ./gradle build - all of the jars required to be run.
+## **Website**
+Discover more about Beeja and its ecosystem on our [official website](https://www.beeja.io).
 
+---
 
-## Running the beeja services
+## **Code of Conduct**
+We value collaboration and respect in our community. Please read our [Code of Conduct](./.github/CODE_OF_CONDUCT.md) to ensure a welcoming environment for everyone.
 
+---
+
+## **Contributing**
+Beeja is an open-source project, and we welcome contributions! Check out our [Contributing Guidelines](./.github/CONTRIBUTING.md) to get started.
+
+---
+
+## **Features Overview**
+
+Here’s a quick look at what Beeja offers:
+- **Employee Records Management** – Manage employee data, roles, and organizational structures.
+- **Employee Document Management** – Manage employee documents.
+- **Payroll & Benefits** – Customize payroll, reimbursements, and deductions.
+- **Inventory Management** – Monitor and manage organizational assets.
+- **Finance Module** – Handle invoicing, expenses features.
+
+Watch Beeja in action!  
+[Watch Beeja Demo]
+
+---
+
+## **Installation and Local Setup**
+
+### **Prerequisites**
+Before starting, ensure you have the following installed:
+- **Java 17**
+- **Docker**
+- **Node.js (v16 or later)**
+- **npm** (comes with Node.js)
+- A suitable location on your drive to store files.
+
+---
+
+### **Beeja Backend - Local Setup**
+
+#### **Clone the Repository**
+```bash
+git clone https://github.com/beeja-io/beeja.git
+cd beeja/services
+```
+
+#### **Build the Backend Services**
+```bash
+./gradlew build
+```
+
+#### **Run Beeja Services**
+```bash
 docker compose up --build
-
-Once your compose is up and running, you will start seeing Beeja containers created and running successfully. 
-http://localhost:8761 - Service Registry (Eureka): This should give you all the modules registered to the application and subsequent link to their individual module actuators.
-We are using Feign Client to communicate between services
-
-
-
-## Beeja UI - Local Setup
-
-Follow below steps to run application locally
-
-- Clone the application from current `git repo`
-- Open in any IDE (VS code is preferred)
-- Open terminal in root directory of application
-- Hit below command to install all dependencies required to run application
-
-```txt
-   npm install
 ```
 
-- Now run below command to start application
+#### **Verify Services**
+Once the services are running, verify:
+- **Service Registry (Eureka)**: `http://localhost:8761` – View all registered microservices.
+- **Open API Documentation**: `http://localhost:<ms-specific-port>/swagger-ui` – Explore Beeja's API endpoints.
 
+
+### **Beeja Web - Local Setup**
+
+#### **Clone the Repository**
+```bash
+git clone https://github.com/beeja-io/beeja.git
+cd beeja/web
 ```
-   npm run dev
+
+#### **Install Dependencies**
+```bash
+npm install
+```
+#### **Configure API Endpoint**
+Create a .env file in the web directory and add:
+```text
+VITE_API_BASE_URL=http://localhost:8000
 ```
 
-`Note: create a .env file in your root folder of the project and add VITE_API_BASE_URL = http://localhost:8000`
-
-## Formatting Code using command
-Formatting code before pushing into git is very good practice, to format code in this application use below command in root level of application directory
+#### **Run the Frontend Application**
+```bash
+npm run dev
 ```
-   npm run format
+Visit http://localhost:3000 to access the Beeja UI. Use the default credentials from the init script (email: beeja.admin@domain.com and password: password).
+
+## **API Documentation**
+Beeja includes a built-in OpenAPI documentation interface.  
+Access it at: `http://localhost:8080/swagger-ui`.
+
+## **Code Quality**
+
+### **Formatting Code**
+Before committing changes, format your code using:
+```bash
+npm run format
 ```
 
+## **Modules and Features**
 
-## Localization
-We are using [localize.biz](https://localise.biz/) APIs to fetch and update locale files, translations will be automatically fetched when you start application or hit ```npm run dev```
+### **Roles**
+- **Super Admin**: Manages accounts, creates employees, tracks inventory, and oversees expenses.
 
-Or run command ```npm run fetch-translations``` to fetch and update translation files.
+### **Modules**
 
-## Running the UI application
-http://localhost:3000 - Opens web application - You can use username (email given in the init script) and password as ‘password’.
+#### **Account Management**
+- Manages organizational data and user roles.
+- Comes pre-configured with one organization and a Super Admin user.
 
+#### **Employee Management**
+- Stores job details, contact information, KYC, and bank account data.
+- Sensitive information (e.g., KYC, bank accounts) is encrypted in the database.
 
+#### **Finance**
+- Tracks clients, payroll, invoices, contracts, and inventory.
+- Includes country-specific settings for localized operations.
 
+---
 
-## Open API
+## **Community and Support**
 
-We have open api embedded inside and can be accessed on http://localhost:8080/swagger-ui
-
-
-## Code Quality
-We have embedded check style which will enforce you to follow these practices.
-
-
-
-## Some Jargon/terminology
-Roles - Super admin - Basically an account manager, used to create employees, inventory, expenses
-……………………….
-Features  - Enable disable features in the product
-
-
-
-# Modules
-
-## Account Management
+Join the Beeja community to connect with other contributors and get support:
+- **GitHub Discussions**: [Community Forum](https://github.com/beeja-io/beeja/discussions)
+- **Slack**: [Join our workspace](https://join.slack.com/t/beeja-io/shared_invite/zt-2wh0tptfq-UoFoRvSvIyH2OOplV~6Azw)
 
 
-Accounts module holds data related to organisation and it’s users. When you run the script mongo-init.js, you will be given a one organisation and a user who is super admin. You will be able to manage features, organisation settings, roles in the product.
+---
 
-## Employee Management
-
-
-Employee Management module holds details of employees. It has some key information like job, address, contact, KYC & Bank account details. Contact, KYC & Bank Accounts are stored as an encrypted data in the db so you won’t be able to see them.
-
-
-## Finance
-
-Finance module has information about your clients, payroll, invoice, contracts & inventory of your organisation. There are quite a handful of other settings in this module which comes with features specific to the country. You can manage handful of these features once you set your organisation.
-
-
-&copy; techatcore
-
-
-
+Thank you for choosing Beeja! We can’t wait to see how you use and contribute to the platform. Let’s build the future of organizational operations—together! 🚀
 
  
 
@@ -119,6 +170,3 @@ Finance module has information about your clients, payroll, invoice, contracts &
 
 
 
-
-
-fsdf

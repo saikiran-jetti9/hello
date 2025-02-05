@@ -1,61 +1,181 @@
-# Welcome to Beeja contributing guide <!-- omit in toc -->
+# Welcome to the Beeja Contributing Guide! <!-- omit in toc -->
 
-Thank you for your time in contributing to our project!
+🌟 Thank you for your interest in contributing to Beeja! Your time and effort mean a lot to us. Together, we can build an incredible open-source solution for organizational operations.  
 
-Read our [Code of Conduct](./CODE_OF_CONDUCT.md) before you make any contribution.
+This guide will walk you through the contribution process, from reporting issues to submitting your first pull request (PR). Let’s get started!
 
-In this guide you will get an overview of the contribution workflow from opening an issue, creating a PR, reviewing, and merging the PR.
+---
 
-Use the table of contents icon <img alt="Table of contents icon" src="/contributing/images/table-of-contents.png" width="25" height="25" /> on the top left corner of this document to get to a specific section of this guide quickly.
+## **Table of Contents**
+- [Code of Conduct](#code-of-conduct)
+- [New Contributor Guide](#new-contributor-guide)
+- [Getting Started](#getting-started)
+  - [Navigate the Codebase](#navigate-the-codebase)
+  - [Issues](#issues)
+    - [Creating a New Issue](#creating-a-new-issue)
+    - [Solving an Issue](#solving-an-issue)
+  - [Making Changes](#making-changes)
+  - [Commit Guidelines](#commit-guidelines)
+  - [Submitting a Pull Request (PR)](#submitting-a-pull-request-pr)
+- [Congratulations, Your PR is Merged! 🎉](#congratulations-your-pr-is-merged-)
 
-## New contributor guide
+---
 
-To get started and get an overview of the project, read the [README](../README.md) file. 
+## **Code of Conduct**
+Please take a moment to review our [Code of Conduct](./CODE_OF_CONDUCT.md). We are committed to fostering a welcoming and inclusive community for everyone.  
 
+---
 
-## Getting started
+## **New Contributor Guide**
 
-Navigate our codebase :confetti_ball:
+If this is your first time contributing to Beeja, we recommend you:
+- Read the [README](../README.md) for an overview of the project.
+- Familiarize yourself with the purpose and structure of the codebase.
+- Explore the **issues** section to find tasks you’d like to help with.
 
+---
 
-### Issues
+## **Getting Started**
 
-#### Create a new issue
+### **Navigate the Codebase**
+Our repository is structured with:
+- **`/services`**: Contains backend microservices built with Java and Spring Boot.
+- **`/web`**: Contains the frontend application built with React and TypeScript.
 
-If you spot a problem with the docs, [search if an issue already exists](). If a related issue doesn't exist, you can open a new issue using a relevant [issue form](https://github.com/github/docs/issues/new/choose).
+---
 
-#### Solve an issue
+### **Issues**
 
-Scan through our [existing issues]() to find one that interests you. As a general rule, we don’t assign issues to anyone. If you find an issue to work on, you are welcome to open a PR with a fix.
+#### **Creating a New Issue**
+If you’ve found a bug, typo, or improvement opportunity:
+1. **Search Existing Issues**: Check if someone else has already reported it.  
+   - You can search the [Issues tab](https://github.com/beeja-io/issues) for similar issues.
+2. **Open a New Issue**: If it’s a new problem, submit an issue using our [issue templates](https://github.com/beeja-io/issues/new/choose).  
+   - Provide clear details, screenshots (if applicable), and steps to reproduce the problem.
 
-### Make Changes
+#### **Solving an Issue**
+Looking to contribute?  
+1. Browse our [open issues](https://github.com/beeja-io/issues).  
+2. Pick an issue that interests you—no need to ask for permission! Just leave a comment so others know you’re working on it.
+3. Fork the repository and start solving the issue (details below).  
 
-Steps to follow....
+---
 
-#### Make changes in a codespace
+### **Making Changes**
 
-Steps to follow....
+Follow these steps to contribute effectively:  
 
-#### Make changes locally
+1. **Fork the Repository**: Click the "Fork" button at the top of this repository to create your copy.
+2. **Clone Your Fork**:  
+   ```bash
+   git clone https://github.com/beeja-io/beeja.git
+   cd beeja
+   ```
+3. **Create a Branch**:  
+   - Always create a branch off the `master` branch. Use meaningful branch names, like `fix-bug-123` or `add-new-feature`.  
+   ```bash
+   git checkout -b your-branch-name
+   ```
+4. **Write Tests**:  
+   - If you’re adding new code, include relevant tests to verify your implementation.
+   - For API changes, ensure the OpenAPI spec is updated in the corresponding module to reflect your changes.
 
-1. Fork the repository.
+5. **Ensure All Tests Pass**:  
+   - Run the existing tests to verify that your changes don’t introduce any regressions.
+   - Use the following command (adjust based on your service or framework):
+   ```bash
+   ./gradlew test
+   ```
+   For frontend changes, you can run:
+   ```bash
+   npm run test
+   ```
 
-2. Make sure you have Java 17 version in your machine
+### **Commit Guidelines**
 
-3. Install or update Node. 
+When committing your changes:
 
-4. Create a working branch and start with your changes!
+1. **Follow Proper Linting**:  
+   - Use the provided linting tools to ensure clean, consistent code.
+   - For backend code, check for adherence to the project’s coding standards.
+   - For frontend code, run the linter using:
+     ```bash
+     npm run lint
+     ```
 
-### Commit your update
+2. **Run Checkstyle**:  
+   - Ensure that all backend code passes Checkstyle validation before committing.
 
-Commit the changes once you are happy with them. Don't forget follow our checklist :zap:.
+3. **Write Clear Commit Messages**:  
+   - Use a meaningful and concise commit message to describe your changes.  
+     **Examples**:
+     - `fix: resolve null pointer exception in EmployeeService`
+     - `feature: add employee onboarding workflow support`
+     - `docs: update README with API documentation link`
 
-### Pull Request
+4. **Commit Your Changes**:  
+   - Stage your changes:
+     ```bash
+     git add .
+     ```
+   - Commit with a meaningful message:
+     ```bash
+     git commit -m "Your commit message here"
+     ```
 
-When you're finished with the changes, create a pull request, also known as a PR. 
-- We need clear comments on what you are tyring to do.
-- There will be some automated checks that might happen on your PR. 
+---
 
-### Your PR is merged!
+### **Submitting a Pull Request (PR)**
 
-Congratulations, The Beeja team thanks you :sparkles:.
+Once your changes are ready to be reviewed:
+
+1. **Push Your Branch**:
+   ```bash
+   git push origin your-branch-name
+   ```
+2. **Open a Pull Request (PR)**:
+   - Navigate to your forked repository on GitHub.
+   - Click the "Compare & Pull Request" button.
+   - Fill out the PR template with the following details:
+     - **Title**: Summarize your changes concisely (e.g., `feature: add employee onboarding`).
+     - **Description**: Clearly explain what the PR does, including:
+       - The problem it solves or the feature it implements.
+       - Any relevant links to related issues or discussions.
+       - Any limitations or areas for future work.
+     - **Checklist**: Ensure your PR adheres to the guidelines:
+       - Code is linted and formatted.
+       - Tests are added or updated if necessary.
+       - OpenAPI spec is updated for API changes.
+
+3. **Automated Checks**:
+   - Your PR will automatically trigger the following checks:
+     - Linting and formatting.
+     - Unit and integration tests.
+   - Ensure all checks pass before requesting a review.
+
+4. **Respond to Feedback**:
+   - Reviewers may leave comments or suggest changes to improve the code.
+   - Address their feedback and push your updates to the same branch:
+     ```bash
+     git push origin your-branch-name
+     ```
+
+5. **Squash Commits**:
+   - If your PR contains multiple commits, squash them into a single commit to keep the history clean:
+    ```bash
+     git rebase -i master
+    ```
+   - Use a meaningful commit message when squashing.
+
+---
+
+### **Congratulations, Your PR is Merged! 🎉**
+
+Thank you for contributing to Beeja! Your efforts are now part of an open-source platform helping organizations worldwide. 🌟  
+
+#### What’s Next?
+Looking for more ways to contribute?  
+- Explore the [issues tab](https://github.com/beeja-io/issues) for more tasks.  
+- Join our [community discussions](https://github.com/beeja-io/discussions) to share ideas and get updates.  
+
+Together, let’s shape the future of organizational operations with Beeja. 🚀
