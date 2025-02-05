@@ -3,4 +3,4 @@ WORKDIR /beeja-expense
 COPY build/libs/beeja-expense-1.0-SNAPSHOT.jar beeja-expense-1.0-SNAPSHOT.jar
 ENV SPRING_PROFILES_ACTIVE=test
 CMD ["java", "-jar", "beeja-expense-1.0-SNAPSHOT.jar"]
-#fsf
+#fsffsfsdfsffffsdffsf
