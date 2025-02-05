@@ -3,3 +3,4 @@ WORKDIR /beeja-cloud-gateway
 COPY build/libs/beeja-cloud-gateway-1.0-SNAPSHOT.jar beeja-cloud-gateway-1.0-SNAPSHOT.jar
 ENV SPRING_PROFILES_ACTIVE=docker
 CMD ["java", "-jar", "beeja-cloud-gateway-1.0-SNAPSHOT.jar"]
+#fsd
