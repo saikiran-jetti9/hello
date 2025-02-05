@@ -4,3 +4,4 @@ VOLUME /beeja-file-storage
 COPY build/libs/beeja-file-management-1.0-SNAPSHOT.jar beeja-file-management-1.0-SNAPSHOT.jar
 ENV SPRING_PROFILES_ACTIVE=docker
 CMD ["java", "-jar", "beeja-file-management-1.0-SNAPSHOT.jar"]
+#fsf
