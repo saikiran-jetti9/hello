@@ -6,7 +6,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 FROM nginx:alpine
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 3000 3000
