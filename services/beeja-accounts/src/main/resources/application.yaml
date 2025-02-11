@@ -1,0 +1,42 @@
+server:
+  servlet:
+    context-path: /accounts
+  port: 8080
+spring:
+  application:
+    name: accounts-service
+  data:
+    mongodb:
+      auto-index-creation: true
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DB_NAME}
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL}
+
+# actuator
+management:
+  endpoints.web.exposure.include: health,info
+  info.env.enabled: true
+info:
+  application.name: ${spring.application.name}
+
+urls:
+  frontendUrl: ${FRONTEND_CLIENT_URL}
+
+client-urls:
+  employeeService: ${EMPLOYEE_SERVICE_BASE_URL}/employees
+  fileService: ${FILE_SERVICE_BASE_URL}/files
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    url: /openApi.yaml
+
+jwt:
+  secret: ${JWT_SECRET_KEY}

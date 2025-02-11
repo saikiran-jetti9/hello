@@ -1,0 +1,37 @@
+server:
+  servlet:
+    context-path: /recruitments
+  port: 8080
+spring:
+  application:
+    name: recruitment-service
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DB_NAME}
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL}
+
+# actuator
+management:
+  endpoints.web.exposure.include: health,info
+  info.env.enabled: true
+info:
+  application.name: ${spring.application.name}
+
+
+authentication:
+  clientId: ${GOOGLE_CLIENT_ID}
+  tokenUri: https://www.googleapis.com/oauth2/v3/tokeninfo
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+
+client-urls:
+  accountsService: ${ACCOUNTS_SERVICE_BASE_URL}/accounts
+  fileService: ${FILE_SERVICE_BASE_URL}/files

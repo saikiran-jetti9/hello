@@ -1,0 +1,87 @@
+server:
+  servlet:
+    context-path: /files
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  port: 8080
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  application:
+    name: file-service
+  data:
+    mongodb:
+      uri: ${MONGO_DB_URI_FILES}
+      database: ${MONGO_DB_NAME}
+  cloud:
+    gcp:
+      project-id: t-beeja
+      credentials:
+        location: classpath:keyfile.json
+
+gcp:
+  bucket:
+    name: ${GCS_BUCKET_NAME}
+
+javers:
+  mappingStyle: FIELD
+  algorithm: SIMPLE
+  commitIdGenerator: synchronized_sequence
+  prettyPrint: true
+  typeSafeValues: false
+  initialChanges: true
+  terminalChanges: true
+  packagesToScan:
+  auditableAspectEnabled: true
+  springDataAuditableRepositoryAspectEnabled: true
+  usePrimitiveDefaults: true
+  prettyPrintDateFormats:
+    localDateTime: 'dd MMM yyyy, HH:mm:ss'
+    zonedDateTime: 'dd MMM yyyy, HH:mm:ssZ'
+    localDate: 'dd MMM yyyy'
+    localTime: 'HH:mm:ss'
+  documentDbCompatibilityEnabled: false
+  objectAccessHook: org.javers.spring.mongodb.DBRefUnproxyObjectAccessHook
+  snapshotsCacheSize: 5000
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone:  ${EUREKA_SERVER_URL}
+
+client-urls:
+  employeeService: ${EMPLOYEE_SERVICE_BASE_URL}/employees
+  accountsService: ${ACCOUNTS_SERVICE_BASE_URL}/accounts
+
+# actuator
+management:
+  endpoints.web.exposure.include: health,info
+  info.env.enabled: true
+info:
+  application.name: ${spring.application.name}
+
+authentication:
+  clientId: ${GOOGLE_CLIENT_ID}
+  tokenUri: https://www.googleapis.com/oauth2/v3/tokeninfo
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    url: /openApi.yaml
+
+file-format:
+  allowedTypes:
+    - application/pdf
+    - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    - application/msword
+    - image/png
+    - image/jpeg
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
