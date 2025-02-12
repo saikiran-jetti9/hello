@@ -10,6 +10,26 @@ spring:
       auto-index-creation: true
       uri: ${MONGODB_URI}
       database: ${MONGODB_DB_NAME}
+javers:
+  mappingStyle: FIELD
+  algorithm: SIMPLE
+  commitIdGenerator: synchronized_sequence
+  prettyPrint: true
+  typeSafeValues: false
+  initialChanges: true
+  terminalChanges: true
+  packagesToScan:
+  auditableAspectEnabled: true
+  springDataAuditableRepositoryAspectEnabled: true
+  usePrimitiveDefaults: true
+  prettyPrintDateFormats:
+    localDateTime: 'dd MMM yyyy, HH:mm:ss'
+    zonedDateTime: 'dd MMM yyyy, HH:mm:ssZ'
+    localDate: 'dd MMM yyyy'
+    localTime: 'HH:mm:ss'
+  documentDbCompatibilityEnabled: false
+  objectAccessHook: org.javers.spring.mongodb.DBRefUnproxyObjectAccessHook
+  snapshotsCacheSize: 5000
 
 eureka:
   instance:
@@ -31,6 +51,10 @@ urls:
 client-urls:
   employeeService: ${EMPLOYEE_SERVICE_BASE_URL}/employees
   fileService: ${FILE_SERVICE_BASE_URL}/files
+
+authentication:
+  clientId: ${GOOGLE_CLIENT_ID}
+  tokenUri: https://www.googleapis.com/oauth2/v3/tokeninfo
 
 springdoc:
   api-docs:
