@@ -12,28 +12,7 @@ spring:
   data.mongodb:
     uri: ${MONGO_DB_URI}
     database: ${MONGO_DATABASE_NAME}
-  main:
-    web-application-type: reactive
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
-            authorization-grant-type: authorization_code
-            scope:
-              - email
-              - profile
-              - openid
-        provider:
-          google:
-            tokenUri: https://oauth2.googleapis.com/token
-            userInfoUri: https://openidconnect.googleapis.com/v1/userinfo
-            jwkSetUri: https://www.googleapis.com/oauth2/v3/certs
-            tokenInfoUri: https://www.googleapis.com/oauth2/v3/tokeninfo
-            user-name-attribute: sub
-            authorizationUri: https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent
+
   cloud:
     gateway:
       globalcors:
