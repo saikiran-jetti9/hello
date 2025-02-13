@@ -8,10 +8,10 @@ spring:
 
 eureka:
   instance:
-    preferIpAddress: false
-    hostname: beeja-api-service-registry-service
+    preferIpAddress: true
+    # hostname: beeja-api-service-registry-service
   client:
     register-with-eureka: false
     fetch-registry: false
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: ${EUREKA_SERVER_URL}
