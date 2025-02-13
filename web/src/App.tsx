@@ -62,6 +62,8 @@ function App() {
             return;
           }
         }
+        console.log(`login url ${import.meta.env.VITE_API_BASE_URL}`);
+        console.log(`window location url ${window.location.origin}`);
         window.location.href =
           window.location.origin === OriginURL ||
           window.location.origin === ProdOriginURL
