@@ -21,7 +21,7 @@ It comes with init-beeja-db.js and a docker compose.yaml. These will help you to
 
 ## Beeja Backend - Local Setup
 
-$ ./gradle build - all of the jars required to be run.
+$ ./gradle build - all of the jars required to be run.fsd
 
 
 ## Running the beeja services
