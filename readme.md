@@ -9,7 +9,7 @@ You can manage your employees, finances, clients, contracts & expenses in this e
 
 You will need following installed on your system
 
-Java 17
+Java 17sfsf
 Docker
 Suitable location on your drive to store files
 
